@@ -57,8 +57,7 @@ class FrameBuilder(
     }
 
     private val mediaCodec: MediaCodec = run {
-        val codecs = MediaCodecList(REGULAR_CODECS)
-        MediaCodec.createByCodecName(codecs.findEncoderForFormat(mediaFormat))
+        MediaCodec.createDecoderByType(muxerConfig.mimeType)
     }
 
     private val bufferInfo: MediaCodec.BufferInfo = MediaCodec.BufferInfo()
@@ -87,6 +86,7 @@ class FrameBuilder(
      */
     fun start() {
         mediaCodec.configure(mediaFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE)
+        mediaCodec.setVideoScalingMode(MediaCodec.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
         surface = mediaCodec.createInputSurface()
         mediaCodec.start()
         drainCodec(false)
