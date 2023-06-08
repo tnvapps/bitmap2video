@@ -1,5 +1,6 @@
 package com.homesoft.encoder
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.AssetFileDescriptor
 import android.graphics.Bitmap
@@ -7,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.media.*
+import android.media.MediaCodecList.ALL_CODECS
 import android.media.MediaCodecList.REGULAR_CODECS
 import android.os.Build
 import android.util.Log
@@ -57,7 +59,7 @@ class FrameBuilder(
     }
 
     private val mediaCodec: MediaCodec = run {
-        val codecs = MediaCodecList(REGULAR_CODECS)
+        val codecs = MediaCodecList(ALL_CODECS)
         MediaCodec.createByCodecName(codecs.findEncoderForFormat(mediaFormat))
     }
 
@@ -206,6 +208,7 @@ class FrameBuilder(
         }
     }
 
+    @SuppressLint("WrongConstant")
     fun muxAudioFrames() {
         val sampleSize = 256 * 1024
         val offset = 100
